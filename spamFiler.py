@@ -9,11 +9,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+import numpy as np
 
-import sklearn.feature_extraction.text
-vectorizer = sklearn.feature_extraction.text.TfidfVectorizer()
 
-dataset_dir = r'C:\Users\user\OneDrive\문서\GitHub\PLEASEWORK\easy_ham\easy_ham'
+
+dataset_dir = r'C:\Users\USER\PycharmProjects\testAI\easy_ham\easy_ham'
 encodings = ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
 
 
@@ -47,6 +47,7 @@ def preprocess_email(email):
 # Initialize the list of emails and labels
 emails = []
 labels = []
+
 
 for filename in os.listdir(dataset_dir):
     file_path = os.path.join(dataset_dir, filename)
@@ -85,22 +86,21 @@ features = vectorizer.fit_transform(preprocessed_emails)
 features = features.toarray()
 
 # Get the feature names (vocabulary) learned by the vectorizer
-vocabulary = vectorizer.get_feature_names()
+vocabulary = vectorizer.get_feature_names_out()
 
 # Print the shape of the features
 print("Features shape:", features.shape)
 print("Vocabulary:", vocabulary)
 
-
-
 # Split the features and labels into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, random_state=42)
 
+# Convert y_train and y_test to numpy arrays
+y_train = np.array(y_train)
+y_test = np.array(y_test)
 # Print the shapes of the training and testing sets
 print("Training set shape:", X_train.shape, y_train.shape)
 print("Testing set shape:", X_test.shape, y_test.shape)
-
-
 
 # Initialize the model
 model = LogisticRegression()
